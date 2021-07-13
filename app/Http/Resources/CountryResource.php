@@ -24,10 +24,11 @@ class CountryResource extends JsonResource
                 'country_co' => $country->country_co,
                 'description' => $country->description,
                 'path_image' => $country->path_image,
-                'telephone_co' => $country->telephone_co
+                'telephone_co' => $country->telephone_co,
+                'slug' => $country->slug
             ],
             'links' => [
-                'selft' => route('api.v4.gd.countries.show', $country )
+                'selft' => route('api.v4.countries.read', $country )
             ]
         ];
     }

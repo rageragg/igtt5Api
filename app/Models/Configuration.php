@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Configuration extends Model
 {
@@ -34,4 +35,8 @@ class Configuration extends Model
         'days_per_week',
         'hours_per_day',
     ];
+
+    public function getUuid() {
+        return Str::uuid()->toString();
+    }
 }

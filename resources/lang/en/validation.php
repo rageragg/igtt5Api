@@ -121,6 +121,12 @@ return [
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
+    /*
+    | validacion para slug
+    */
+    'no_underscores' => 'The slug must not contain underscores.',
+    'no_starting_dashes' => 'The slug must not starting dashes',
+    'no_ending_dashes' => 'The slug must not ending dashes',
 
     /*
     |--------------------------------------------------------------------------

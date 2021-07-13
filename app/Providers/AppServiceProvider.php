@@ -3,8 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Builder;
-use App\Mixin\JsonApiBuilder;
+use CloudCreativity\LaravelJsonApi\LaravelJsonApi;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +25,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        Builder::mixin( new JsonApiBuilder );
+        LaravelJsonApi::defaultApi('v4');
     }
 }
