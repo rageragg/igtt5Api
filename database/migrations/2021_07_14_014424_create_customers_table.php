@@ -24,7 +24,7 @@ class CreateCustomersTable extends Migration
             $table->string('fiscal_document_co', 60);
             $table->enum('k_type_customer', ['F', 'M', 'D']);
             $table->enum('k_categry_co', ['A', 'B', 'C']);
-            $table->enum('k_sector', [ 'A', 'B', 'C', 'D', 'E', 'F']);
+            $table->string('k_sector', 60);
             $table->string('name_contact', 60);
             $table->string('telephone_contact', 60);
             $table->string('email_contact', 60);

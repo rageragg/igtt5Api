@@ -69,5 +69,5 @@ JsonApi::register('v4')
         ->relationships( function($api) {
         $api->hasOne('user')->except('replace');
         $api->hasOne('city')->except('replace');
-});
+    });
 });
