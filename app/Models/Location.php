@@ -44,6 +44,11 @@ class Location extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function customers()
+    {
+        return $this->hasMany(Customer::class);
+    }
+
     public function scopeDescription(Builder $query, $value)
     {
         $query->where( 'description', 'LIKE', "%{$value}%" );
