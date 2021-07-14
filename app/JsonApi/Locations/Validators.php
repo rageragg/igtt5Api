@@ -53,13 +53,13 @@ class Validators extends AbstractValidators
                 'alpha_dash',
                 new Slug
             ],
-            'city_co' => [
+            'location_co' => [
                 'required',
-                Rule::unique('cities')->ignore($location)
+                Rule::unique('locations')->ignore($location)
             ],
-            'municipality_id' => [
+            'city_id' => [
                 'required',
-                'exists:municipalities,id'
+                'exists:cities,id'
             ]
         ];
     }

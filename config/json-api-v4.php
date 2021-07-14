@@ -74,6 +74,7 @@ return [
         'municipalities' => \App\Models\Municipality::class,
         'cities' => \App\Models\City::class,
         'locations' => \App\Models\Location::class,
+        'customers' => \App\Models\Customer::class,
     ],
 
     /*
