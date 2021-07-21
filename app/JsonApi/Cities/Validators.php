@@ -50,17 +50,17 @@ class Validators extends AbstractValidators
             'postal_co' => ['required'],
             'slug' => [
                 'required',
-                Rule::unique('locations')->ignore($location),
+                Rule::unique('cities')->ignore($location),
                 'alpha_dash',
                 new Slug
             ],
-            'location_co' => [
+            'city_co' => [
                 'required',
-                Rule::unique('locations')->ignore($location)
+                Rule::unique('cities')->ignore($location)
             ],
-            'city_id' => [
+            'municipality_id' => [
                 'required',
-                'exists:cities,id'
+                'exists:municipalities,id'
             ]
         ];
     }
