@@ -86,4 +86,9 @@ class Adapter extends AbstractAdapter
         return $this->belongsTo();
     }
 
+    public function locations()
+    {
+        return $this->hasMany();
+    }
+
 }

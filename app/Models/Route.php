@@ -2,40 +2,30 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
-class City extends Model
+class Route extends Model
 {
     use HasFactory;
 
-    protected $table = "cities";
-
-    protected $guarded = [
-        'id'
-    ];
-
-    protected $fillable = [
-        'city_co',
-        'description',
-        'municipality_id',
-        'postal_co',
-        'telephone_co',
-        'slug',
-        'uuid',
-        'user_id'
-    ];
+    protected $table = "routes";
 
     public function getRouteKeyName()
     {
         return 'slug';
     }
 
-    public function municipality()
+    public function fromCity()
     {
-        return $this->belongsTo(Municipality::class);
+        return $this->belongsTo(City::class, 'from_city_id', 'id');
+    }
+
+    public function toCity()
+    {
+        return $this->belongsTo(City::class, 'to_city_id', 'id' );
     }
 
     public function user()
@@ -43,24 +33,9 @@ class City extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function locations()
-    {
-        return $this->hasMany(Location::class);
-    }
-
-    public function routes()
-    {
-        return $this->hasMany(Route::class);
-    }
-
     public function scopeDescription(Builder $query, $value)
     {
         $query->where( 'description', 'LIKE', "%{$value}%" );
-    }
-
-    public function scopeMunicipalityId(Builder $query, $value)
-    {
-        $query->where( 'municipality_id', $value );
     }
 
     public function scopeUserId(Builder $query, $value)
@@ -79,5 +54,4 @@ class City extends Model
             $model->uuid = Str::uuid()->toString();
         });
     }
-
 }

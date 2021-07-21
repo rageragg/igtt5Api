@@ -61,6 +61,14 @@ class Schema extends SchemaProvider
                 self::DATA => function() use ($cities) {
                     return $cities->municipality;
                 }
+            ],
+            'locations' => [
+                self::SHOW_RELATED => true,
+                self::SHOW_SELF => true,
+                self::SHOW_DATA => true,
+                self::DATA => function() use ($cities) {
+                    return $cities->locations;
+                }
             ]
         ];
     }
