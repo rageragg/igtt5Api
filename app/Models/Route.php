@@ -13,6 +13,23 @@ class Route extends Model
 
     protected $table = "routes";
 
+    protected $guarded = [
+        'id'
+    ];
+
+    protected $fillable = [
+        'route_co',
+        'description',
+        'from_city_id',
+        'to_city_id',
+        'k_level_co',
+        'slug',
+        'uuid',
+        'user_id',
+        'distance_km',
+        'estimated_time_hrs'
+    ];
+
     public function getRouteKeyName()
     {
         return 'slug';

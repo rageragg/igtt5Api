@@ -55,26 +55,33 @@ JsonApi::register('v4')
 
     $api->resource('municipalities')
         ->relationships( function($api) {
-        $api->hasOne('user')->except('replace');
-        $api->hasOne('province')->except('replace');
+            $api->hasOne('user')->except('replace');
+            $api->hasOne('province')->except('replace');
     });
 
     $api->resource('cities')
         ->relationships( function($api) {
-        $api->hasOne('user')->except('replace');
-        $api->hasOne('municipality')->except('replace');
+            $api->hasOne('user')->except('replace');
+            $api->hasOne('municipality')->except('replace');
     });
 
     $api->resource('locations')
         ->relationships( function($api) {
-        $api->hasOne('user')->except('replace');
-        $api->hasOne('city')->except('replace');
+            $api->hasOne('user')->except('replace');
+            $api->hasOne('city')->except('replace');
     });
 
     $api->resource('customers')
         ->relationships( function($api) {
-        $api->hasOne('user')->except('replace');
-        $api->hasOne('locations')->except('replace');
+            $api->hasOne('user')->except('replace');
+            $api->hasOne('locations')->except('replace');
+    });
+
+    $api->resource('routes')
+        ->relationships( function($api) {
+            $api->hasOne('user')->except('replace');
+            $api->hasOne('fromCity')->except('replace');
+            $api->hasOne('toCity')->except('replace');
     });
 
 });

@@ -46,7 +46,7 @@ class Validators extends AbstractValidators
      *      the data being validated
      * @return array
      */
-    protected function rules($location, array $data): array
+    protected function rules($city, array $data): array
     {
         return [
             'description' => ['required'],
@@ -54,13 +54,13 @@ class Validators extends AbstractValidators
             'postal_co' => ['required'],
             'slug' => [
                 'required',
-                Rule::unique('cities')->ignore($location),
+                Rule::unique('cities')->ignore($city),
                 'alpha_dash',
                 new Slug
             ],
             'city_co' => [
                 'required',
-                Rule::unique('cities')->ignore($location)
+                Rule::unique('cities')->ignore($city)
             ],
             'municipality_id' => [
                 'required',

@@ -43,31 +43,31 @@ class Schema extends SchemaProvider
         ];
     }
 
-    public function getRelationships($cities, $isPrimary, array $includeRelationships)
+    public function getRelationships($citie, $isPrimary, array $includeRelationships)
     {
         return [
             'user' => [
                 self::SHOW_RELATED => false,
                 self::SHOW_SELF => true,
                 self::SHOW_DATA => true,
-                self::DATA => function() use ($cities) {
-                    return $cities->user;
+                self::DATA => function() use ($citie) {
+                    return $citie->user;
                 }
             ],
             'municipality' => [
                 self::SHOW_RELATED => true,
                 self::SHOW_SELF => true,
                 self::SHOW_DATA => true,
-                self::DATA => function() use ($cities) {
-                    return $cities->municipality;
+                self::DATA => function() use ($citie) {
+                    return $citie->municipality;
                 }
             ],
             'locations' => [
                 self::SHOW_RELATED => true,
                 self::SHOW_SELF => true,
                 self::SHOW_DATA => true,
-                self::DATA => function() use ($cities) {
-                    return $cities->locations;
+                self::DATA => function() use ($citie) {
+                    return $citie->fromCity;
                 }
             ]
         ];
