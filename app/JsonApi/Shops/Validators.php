@@ -1,6 +1,6 @@
 <?php
 
-namespace App\JsonApi\Routes;
+namespace App\JsonApi\Shops;
 
 use CloudCreativity\LaravelJsonApi\Validation\AbstractValidators;
 use App\Rules\Slug;
@@ -17,8 +17,7 @@ class Validators extends AbstractValidators
      */
     protected $allowedIncludePaths = [
         'user',
-        'fromCity',
-        'toCity'
+        'location'
     ];
 
     /**
@@ -27,7 +26,7 @@ class Validators extends AbstractValidators
      * @var string[]|null
      *      the allowed fields, an empty array for none allowed, or null to allow all fields.
      */
-    protected $allowedSortParameters = [ 'description', 'userId', 'slug', 'fromCityId', 'toCityId'  ];
+    protected $allowedSortParameters = [ 'description', 'userId', 'slug', 'locationId' ];
 
     /**
      * The filters a client is allowed send.
@@ -46,28 +45,24 @@ class Validators extends AbstractValidators
      *      the data being validated
      * @return array
      */
-    protected function rules($route, array $data): array
+    protected function rules($shop, array $data): array
     {
         return [
             'description' => ['required'],
             'slug' => [
                 'required',
-                Rule::unique('routes')->ignore($route),
+                Rule::unique('shops')->ignore($shop),
                 'alpha_dash',
                 new Slug
             ],
-            'route_co' => [
+            'shop_co' => [
                 'required',
-                Rule::unique('routes')->ignore($route)
+                Rule::unique('shops')->ignore($shop)
             ],
-            'from_city_id' => [
+            'location_id' => [
                 'required',
-                'exists:cities,id'
+                'exists:locations,id'
             ],
-            'to_city_id' => [
-                'required',
-                'exists:cities,id'
-            ]
         ];
     }
 

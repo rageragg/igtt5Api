@@ -77,6 +77,12 @@ JsonApi::register('v4')
             $api->hasOne('locations')->except('replace');
     });
 
+    $api->resource('shops')
+        ->relationships( function($api) {
+            $api->hasOne('user')->except('replace');
+            $api->hasOne('locations')->except('replace');
+    });
+
     $api->resource('routes')
         ->relationships( function($api) {
             $api->hasOne('user')->except('replace');

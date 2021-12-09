@@ -75,6 +75,7 @@ return [
         'cities' => \App\Models\City::class,
         'locations' => \App\Models\Location::class,
         'customers' => \App\Models\Customer::class,
+        'shops' => \App\Models\Shop::class,
         'routes' => \App\Models\Route::class
     ],
 
