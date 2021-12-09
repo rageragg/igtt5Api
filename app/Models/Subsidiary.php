@@ -34,7 +34,7 @@ class Subsidiary extends Model
 
     public function shop()
     {
-        return $this->belongsTo(Location::class);
+        return $this->belongsTo(shop::class);
     }
 
     public function customer()
