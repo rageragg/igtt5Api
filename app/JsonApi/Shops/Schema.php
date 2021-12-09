@@ -66,7 +66,7 @@ class Schema extends SchemaProvider
                 self::SHOW_SELF => true,
                 self::SHOW_DATA => true,
                 self::DATA => function() use ($shop) {
-                    return $shop->municipality;
+                    return $shop->location;
                 }
             ]
         ];
