@@ -71,4 +71,9 @@ class Adapter extends AbstractAdapter
         $user->password =  Hash::make($user->password);
     }
 
+    protected function updating( User $user )
+    {
+        $user->password =  Hash::make($user->password);
+    }
+
 }

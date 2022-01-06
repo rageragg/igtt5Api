@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\RegisterController;
+use App\Http\Controllers\Api\StatisticController;
+
 use CloudCreativity\LaravelJsonApi\Facades\JsonApi;
 
 /*
@@ -25,10 +27,28 @@ Route::post('api/v4/login', [ LoginController::class, 'login' ])
     ->name('api.v4.login')
     ->middleware('guest:sanctum');
 
+Route::post('api/v4/token', [ LoginController::class, 'token' ])
+    ->name('api.v4.token')
+    ->middleware('guest:sanctum');
+
 Route::post('api/v4/logout', [ LoginController::class, 'logout' ])
     ->name('api.v4.logout')
     ->middleware('auth:sanctum');
 
+// statistic USERS
+Route::get('api/v4/user/count/', [ StatisticController::class, 'countUsers' ])
+    ->name('api.v4.user.count')
+    ->middleware('auth:sanctum');
+
+Route::get('api/v4/user/count/rol', [ StatisticController::class, 'countUsersByRol' ])
+    ->name('api.v4.user.count.rol')
+    ->middleware('auth:sanctum');
+
+Route::get('api/v4/user/gestion/{rol}', [ StatisticController::class, 'gestionUsersByRol' ])
+    ->name('api.v4.user.gestion.rol')
+    ->middleware('auth:sanctum');
+
+//
 JsonApi::register('v4')
     ->middleware('auth:sanctum')
     ->routes(function( $api, $router ) {
