@@ -16,8 +16,8 @@ class CreateMunicipalitiesTable extends Migration
         Schema::create('municipalities', function (Blueprint $table) {
             $table->id();
             $table->string('municipality_co', 7)->unique();
-            $table->string('slug', 60)->unique();
             $table->string('description', 80);
+            $table->string('slug', 60)->unique();
             $table->uuid('uuid')->unique();
             $table->unsignedBigInteger('province_id');
             $table->unsignedBigInteger('user_id');

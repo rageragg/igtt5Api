@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProvincesTable extends Migration
+class CreateRouteLocationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,19 @@ class CreateProvincesTable extends Migration
      */
     public function up()
     {
-        Schema::create('provinces', function (Blueprint $table) {
+        Schema::create('route_locations', function (Blueprint $table) {
             $table->id();
-            $table->string('province_co', 7)->unique();
-            $table->string('description', 80);
-            $table->string('slug', 60)->unique();
-            $table->uuid('uuid')->unique();
-            $table->unsignedBigInteger('region_id');
+            $table->unsignedBigInteger('route_id');
+            $table->unsignedBigInteger('location_id');
+
+            $table->string('description', 80)->nullable();
+
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
-            $table->foreign('region_id')->references('id')->on('regions');
+            $table->foreign('route_id')->references('id')->on('routes');
+            $table->foreign('location_id')->references('id')->on('locations');
             $table->foreign('user_id')->references('id')->on('users');
-
         });
     }
 
@@ -36,6 +36,6 @@ class CreateProvincesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('provinces');
+        Schema::dropIfExists('route_locations');
     }
 }

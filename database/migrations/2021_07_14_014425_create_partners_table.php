@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProvincesTable extends Migration
+class CreatePartnersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,24 @@ class CreateProvincesTable extends Migration
      */
     public function up()
     {
-        Schema::create('provinces', function (Blueprint $table) {
+        Schema::create('partners', function (Blueprint $table) {
             $table->id();
-            $table->string('province_co', 7)->unique();
+            $table->string('partner_co', 7)->unique();
             $table->string('description', 80);
+            $table->string('address', 250);
+            $table->string('telephone_co', 50);
+            $table->string('fax_co', 50);
+            $table->string('email', 60);
+            $table->string('fiscal_document_co', 60);
+            $table->string('name_contact', 60);
+            $table->string('telephone_contact', 60);
+            $table->string('email_contact', 60);
             $table->string('slug', 60)->unique();
             $table->uuid('uuid')->unique();
-            $table->unsignedBigInteger('region_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
-            $table->foreign('region_id')->references('id')->on('regions');
+            $table->foreign('location_id')->references('id')->on('locations');
             $table->foreign('user_id')->references('id')->on('users');
 
         });
@@ -36,6 +43,6 @@ class CreateProvincesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('provinces');
+        Schema::dropIfExists('partners');
     }
 }

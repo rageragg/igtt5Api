@@ -16,10 +16,10 @@ class CreateRegionsTable extends Migration
         Schema::create('regions', function (Blueprint $table) {
             $table->id();
             $table->string('region_co', 7)->unique();
-            $table->string('slug', 60)->unique();
             $table->string('description', 80);
-            $table->uuid('uuid')->unique();
             $table->unsignedBigInteger('country_id');
+            $table->string('slug', 60)->unique();
+            $table->uuid('uuid')->unique();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 

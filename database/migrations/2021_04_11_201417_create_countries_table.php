@@ -16,10 +16,10 @@ class CreateCountriesTable extends Migration
         Schema::create('countries', function (Blueprint $table) {
             $table->id();
             $table->string('country_co', 7)->unique();
-            $table->string('slug', 6)->unique();
             $table->string('description', 80);
-            $table->string('path_image', 250)->nullable();
-            $table->string('telephone_co', 250)->nullable();
+            $table->string('path_image', 255)->nullable();
+            $table->string('telephone_co', 3)->nullable();
+            $table->string('slug', 6)->unique();
             $table->uuid('uuid')->unique();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();

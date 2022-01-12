@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProvincesTable extends Migration
+class CreateSubsidiariesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,19 @@ class CreateProvincesTable extends Migration
      */
     public function up()
     {
-        Schema::create('provinces', function (Blueprint $table) {
+        Schema::create('subsidiaries', function (Blueprint $table) {
             $table->id();
-            $table->string('province_co', 7)->unique();
-            $table->string('description', 80);
+            $table->string('subsidiary_co', 7)->unique();
+            $table->unsignedBigInteger('shop_id');
+            $table->unsignedBigInteger('customer_id');
+
             $table->string('slug', 60)->unique();
             $table->uuid('uuid')->unique();
-            $table->unsignedBigInteger('region_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
-            $table->foreign('region_id')->references('id')->on('regions');
+            $table->foreign('shop_id')->references('id')->on('shops');
+            $table->foreign('customer_id')->references('id')->on('customers');
             $table->foreign('user_id')->references('id')->on('users');
 
         });
@@ -36,6 +38,6 @@ class CreateProvincesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('provinces');
+        Schema::dropIfExists('subsidiaries');
     }
 }

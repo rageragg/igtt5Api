@@ -18,11 +18,11 @@ class CreateCitiesTable extends Migration
             $table->id();
             $table->string('city_co', 10)->unique();
             $table->string('description', 80);
+            $table->unsignedBigInteger('municipality_id');
             $table->string('slug', 60)->unique();
             $table->uuid('uuid')->unique();
             $table->string('postal_co', 10);
             $table->string('telephone_co', 4);
-            $table->unsignedBigInteger('municipality_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
