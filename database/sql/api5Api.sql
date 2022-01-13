@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `configurations` (
 
 -- Volcando datos para la tabla igtt4api.configurations: ~0 rows (aproximadamente)
 REPLACE INTO `configurations` (`id`, `local_currency_co`, `foreign_currency_co`, `last_foreign_currency_quote_value`, `last_foreign_currency_quote_date`, `country_co`, `company_description`, `company_address`, `company_telephone_co`, `company_fax_co`, `company_email`, `company_fiscal_document_co`, `company_logo`, `days_per_year`, `weeks_per_year`, `months_per_year`, `days_per_month`, `days_per_week`, `hours_per_day`, `created_at`, `updated_at`) VALUES
-	(1, '$', 'Bs', 0.00, '2020-05-23 10:54:57', 'VEN', 'Transporte El Milagro', 'Zona Industrial III, Barquisimeto, Edo Lara', '58-2510000000', NULL, 'transporteelmilagro@gmail.com', 'J-0000000', NULL, 360, 52, 12, 30, 7, 24, '2020-05-21 12:11:09', '2020-05-23 10:55:35');
+	(1, '$', '$', 4856.34, '2022-01-13 16:05:00', 'VEN', 'Transporte El Milagro', 'Zona Industrial III, Barquisimeto, Edo Lara', '58-2510000000', NULL, 'transporteelmilagro@gmail.com', 'J-0000000', NULL, 360, 52, 12, 26, 6, 12, '2020-05-21 12:11:09', '2022-01-13 17:14:51');
 
 -- Volcando estructura para tabla igtt4api.cost_concepts
 CREATE TABLE IF NOT EXISTS `cost_concepts` (
@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `countries` (
 -- Volcando datos para la tabla igtt4api.countries: ~13 rows (aproximadamente)
 REPLACE INTO `countries` (`id`, `country_co`, `description`, `path_image`, `telephone_co`, `user_id`, `slug`, `uuid`, `created_at`, `updated_at`) VALUES
 	(1, 'PER', 'PERU', 'per.png', '+51', 1, 'per', 'af756502-7e7a-438b-befc-07416dffaefa', '2019-10-09 19:53:43', '2021-06-07 00:53:35'),
-	(2, 'VEN', 'VENENEZUELA', 'ven.png', '+58', 1, 'ven', '74dc004a-d9c6-44fb-9b33-73639aef5cc5', '2019-03-20 04:33:24', '2021-06-07 00:54:14'),
+	(2, 'VEN', 'VENEZUELA', 'ven.png', '+58', 1, 'ven', '74dc004a-d9c6-44fb-9b33-73639aef5cc5', '2019-03-20 04:33:24', '2021-06-07 00:54:14'),
 	(3, 'COL', 'COLOMBIA', 'col.png', '+57', 1, 'col', '7a3fc6b0-0be0-47e5-97b6-591e04ec4442', '2019-03-20 04:37:05', '2021-06-07 00:54:42'),
 	(4, 'BRA', 'BRASIL', 'bra.png', '+55', 1, 'bra', '98715a64-2d09-43ab-bb43-88f13afc64fc', '2019-03-20 04:39:13', '2021-06-07 00:55:19'),
 	(5, 'USA', 'UNITED STATE OF AMERICA', 'usa.png', '1', 1, 'usa', 'ebe7172e-e25e-4145-8e7b-1fc0dfa4ceba', '2021-05-16 21:45:36', '2021-06-07 00:56:53'),
@@ -223,9 +223,11 @@ CREATE TABLE IF NOT EXISTS `employees` (
   `k_level` enum('A','B','C') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'C',
   `partner_id` bigint(20) unsigned DEFAULT NULL,
   `transfer_id` bigint(20) unsigned DEFAULT NULL,
-  `truck_id` bigint(20) unsigned DEFAULT NULL,
-  `trailer_id` bigint(20) unsigned DEFAULT NULL,
-  `location_id` bigint(20) unsigned DEFAULT NULL,
+  `truck_id` bigint(20) unsigned DEFAULT NULL COMMENT 'Truck actual',
+  `trailer_id` bigint(20) unsigned DEFAULT NULL COMMENT 'Trailer actual',
+  `location_id` bigint(20) unsigned DEFAULT NULL COMMENT 'Localidad actual',
+  `last_freight_id` bigint(20) unsigned DEFAULT NULL COMMENT 'Ultimo Flete',
+  `last_freight_secuence_id` bigint(20) unsigned DEFAULT NULL COMMENT 'Ultima seciencia del flete',
   `user_id` bigint(20) unsigned DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -281,6 +283,8 @@ CREATE TABLE IF NOT EXISTS `foreign_currency_quotes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Volcando datos para la tabla igtt4api.foreign_currency_quotes: ~0 rows (aproximadamente)
+REPLACE INTO `foreign_currency_quotes` (`id`, `quote_date`, `quote_value`, `user_id`, `created_at`, `updated_at`) VALUES
+	(21, '2022-01-13 12:05:00', 4856.34, 1, '2022-01-13 12:05:14', '2022-01-13 12:05:15');
 
 -- Volcando estructura para tabla igtt4api.freights
 CREATE TABLE IF NOT EXISTS `freights` (
@@ -665,11 +669,13 @@ CREATE TABLE IF NOT EXISTS `partners` (
   `address` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `telefone_co` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fax_co` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email_co` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fiscal_document_co` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `name_contact` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `telephone_contact` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_contact` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slug` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_id` bigint(20) unsigned DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -705,9 +711,9 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
   KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla igtt4api.personal_access_tokens: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla igtt4api.personal_access_tokens: ~0 rows (aproximadamente)
 REPLACE INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `created_at`, `updated_at`) VALUES
-	(290, 'App\\Models\\User', 1, 'rage-001', 'f4ee73228c2c3e1d47d7821989e7d8b4c0df1fbeb323ddf73134f3599bf06c3a', '["*"]', '2022-01-06 22:54:08', '2022-01-06 22:22:28', '2022-01-06 22:54:08');
+	(306, 'App\\Models\\User', 1, 'rage-001', '223cf8a8b5bdfb8c889d7c2fdf97810b1efac9fca69ff6340921c7c520fe5e55', '["*"]', '2022-01-13 17:48:58', '2022-01-13 17:34:25', '2022-01-13 17:48:58');
 
 -- Volcando estructura para tabla igtt4api.provinces
 CREATE TABLE IF NOT EXISTS `provinces` (
@@ -804,29 +810,33 @@ CREATE TABLE IF NOT EXISTS `routes` (
 
 -- Volcando datos para la tabla igtt4api.routes: ~17 rows (aproximadamente)
 REPLACE INTO `routes` (`id`, `route_co`, `description`, `slug`, `uuid`, `from_city_id`, `to_city_id`, `k_level_co`, `distance_km`, `estimated_time_hrs`, `user_id`, `created_at`, `updated_at`) VALUES
-	(1, '11-12', 'BARQUISIMETO - CARORA', 'bqto-carora', '69f47037-6cb5-4368-a2e2-7c26c2ecb1d9', 11, 12, 'B', 102.37, 2.16, 1, '2020-05-23 14:18:53', '2021-12-09 01:19:51'),
-	(2, '11-30', 'BARQUISIMETO - QUIBOR', 'bqto-quibor', 'c9e07756-06ab-4d34-9805-caaef02c8962', 11, 30, 'A', 39.27, 0.83, 1, '2020-05-23 14:29:06', '2021-12-09 01:20:26'),
-	(3, '11-18', 'BARQUISIMETO - CABUDARE', 'bqto-cabudare', 'd567d5e8-5c77-4d72-a8d6-7f2bc834625b', 11, 18, 'A', 12.22, 0.36, 1, '2020-05-23 20:00:18', '2021-12-09 01:20:37'),
-	(4, '11-20', 'BARQUISIMETO - CHIVACOA', 'bqto-chivacoa', '14e201fc-0919-40ff-b115-74bc6e386422', 11, 20, 'A', 58.00, 1.22, 1, '2020-05-23 20:13:17', '2021-12-09 01:22:50'),
-	(5, '11-21', 'BARQUISIMETO - YARITAGUA', 'bqto-yaritagua', '8b179cab-d026-4842-9a5b-9e9d9d8e9d2a', 11, 21, 'A', 24.57, 0.52, 1, '2020-05-23 20:14:38', '2021-12-09 01:23:33'),
-	(6, '11-24', 'BARQUISIMETO - ACARIGUA', 'bqto-acarigua', '6c16116e-cbf9-4f58-8cbb-8ef4045aa776', 11, 24, 'A', 78.00, 1.00, 1, '2020-06-01 13:56:07', '2021-12-09 01:23:43'),
-	(7, '11-33', 'BARQUISIMETO - ARAURE', 'bqto-apure', '3f9fe2c8-fa9f-445f-84a4-9b416296bdca', 11, 33, 'A', 77.00, 1.00, 1, '2020-06-01 14:07:27', '2021-12-09 01:23:55'),
-	(8, '11-13', 'BARQUISIMETO - LA PASTORA', 'bqto-lapastora', '1cd16b0d-4878-4d4b-852c-d73c11641312', 11, 13, 'A', 118.00, 3.00, 1, '2021-02-07 18:17:54', '2021-12-09 01:24:33'),
-	(9, '21-11', 'YARITAGUA - BARQUISIMETO', 'yaritagua-bqto', '960ae4f0-52f2-4392-a2ee-27a24db6127c', 21, 11, 'A', 24.00, 0.00, 1, '2021-02-07 18:36:22', '2021-12-09 01:24:42'),
-	(10, '20-11', 'CHIVACOA - BARQUISIMETO', 'chivacoa-bqto', '443ad798-c6ed-4ae5-812e-d414b3c93213', 20, 11, 'A', 58.00, 1.00, 1, '2021-02-07 18:37:59', '2021-12-09 01:24:50'),
-	(11, '12-11', 'CARORA - BARQUISIMETO', 'carora-bqto', 'd24c3174-eea7-4990-b834-e6996871b79f', 12, 11, 'A', 102.00, 2.00, 1, '2021-02-07 18:46:03', '2021-12-09 01:25:10'),
-	(12, '11-1', 'BARQUISIMETO - CARACAS', 'bqto-ccs', '191205d7-96c0-4ffc-8858-2e32eca7fa1f', 11, 1, 'B', 365.00, 4.99, 1, '2021-12-09 01:37:27', '2021-12-09 01:37:27'),
-	(13, '11-5', 'BARQUISIMETO - MARACAY', 'bqto-mrcy', '4555310c-3af3-456a-92bb-deaaaf0d482c', 11, 5, 'B', 248.40, 3.50, 1, '2021-12-09 01:39:28', '2021-12-09 01:39:28'),
-	(14, '5-11', 'MARACAY - BARQUISIMETO', 'mrcy-bqto', 'ca9ccfa8-d09b-4619-b354-af20637ede7e', 5, 11, 'B', 248.40, 3.50, 1, '2021-12-09 01:42:07', '2021-12-09 01:42:07'),
-	(15, '1-11', 'CARACAS - BARQUISIMETO', 'ccs-bqto', '783dd325-cc66-4bf3-b56f-4cb2a68924ff', 1, 11, 'B', 365.00, 4.99, 1, '2021-12-09 01:45:18', '2021-12-09 01:45:18'),
-	(16, '11-35', 'BARQUISIMETO - VALENCIA', 'bqto-vlcia', 'c8e315de-7ca7-4bcc-b51d-9e1a02b2d370', 11, 35, 'B', 188.70, 2.99, 1, '2021-12-09 02:50:19', '2021-12-09 02:50:19'),
-	(17, '35-11', 'VALENCIA - BARQUISIMETO', 'vlcia-bqto', '427e26a4-5bf7-4e65-9fac-4eff24fe1be4', 35, 11, 'B', 188.70, 2.99, 1, '2021-12-09 03:04:54', '2021-12-09 03:04:54');
+	(1, '11-12', 'BARQUISIMETO - CARORA', 'bqto-carora', '69f47037-6cb5-4368-a2e2-7c26c2ecb1d9', 11, 12, 'B', 102.37, 2.16, 70, '2020-05-23 14:18:53', '2021-12-09 01:19:51'),
+	(2, '11-30', 'BARQUISIMETO - QUIBOR', 'bqto-quibor', 'c9e07756-06ab-4d34-9805-caaef02c8962', 11, 30, 'A', 39.27, 0.83, 70, '2020-05-23 14:29:06', '2021-12-09 01:20:26'),
+	(3, '11-18', 'BARQUISIMETO - CABUDARE', 'bqto-cabudare', 'd567d5e8-5c77-4d72-a8d6-7f2bc834625b', 11, 18, 'A', 12.22, 0.36, 70, '2020-05-23 20:00:18', '2021-12-09 01:20:37'),
+	(4, '11-20', 'BARQUISIMETO - CHIVACOA', 'bqto-chivacoa', '14e201fc-0919-40ff-b115-74bc6e386422', 11, 20, 'A', 58.00, 1.22, 70, '2020-05-23 20:13:17', '2021-12-09 01:22:50'),
+	(5, '11-21', 'BARQUISIMETO - YARITAGUA', 'bqto-yaritagua', '8b179cab-d026-4842-9a5b-9e9d9d8e9d2a', 11, 21, 'A', 24.57, 0.52, 70, '2020-05-23 20:14:38', '2021-12-09 01:23:33'),
+	(6, '11-24', 'BARQUISIMETO - ACARIGUA', 'bqto-acarigua', '6c16116e-cbf9-4f58-8cbb-8ef4045aa776', 11, 24, 'A', 78.00, 1.00, 70, '2020-06-01 13:56:07', '2021-12-09 01:23:43'),
+	(7, '11-33', 'BARQUISIMETO - ARAURE', 'bqto-apure', '3f9fe2c8-fa9f-445f-84a4-9b416296bdca', 11, 33, 'A', 77.00, 1.00, 70, '2020-06-01 14:07:27', '2021-12-09 01:23:55'),
+	(8, '11-13', 'BARQUISIMETO - LA PASTORA', 'bqto-lapastora', '1cd16b0d-4878-4d4b-852c-d73c11641312', 11, 13, 'A', 118.00, 3.00, 70, '2021-02-07 18:17:54', '2021-12-09 01:24:33'),
+	(9, '21-11', 'YARITAGUA - BARQUISIMETO', 'yaritagua-bqto', '960ae4f0-52f2-4392-a2ee-27a24db6127c', 21, 11, 'A', 24.00, 0.00, 70, '2021-02-07 18:36:22', '2021-12-09 01:24:42'),
+	(10, '20-11', 'CHIVACOA - BARQUISIMETO', 'chivacoa-bqto', '443ad798-c6ed-4ae5-812e-d414b3c93213', 20, 11, 'A', 58.00, 1.00, 70, '2021-02-07 18:37:59', '2021-12-09 01:24:50'),
+	(11, '12-11', 'CARORA - BARQUISIMETO', 'carora-bqto', 'd24c3174-eea7-4990-b834-e6996871b79f', 12, 11, 'A', 102.00, 2.00, 70, '2021-02-07 18:46:03', '2021-12-09 01:25:10'),
+	(12, '11-1', 'BARQUISIMETO - CARACAS', 'bqto-ccs', '191205d7-96c0-4ffc-8858-2e32eca7fa1f', 11, 1, 'B', 365.00, 4.99, 70, '2021-12-09 01:37:27', '2021-12-09 01:37:27'),
+	(13, '11-5', 'BARQUISIMETO - MARACAY', 'bqto-mrcy', '4555310c-3af3-456a-92bb-deaaaf0d482c', 11, 5, 'B', 248.40, 3.50, 70, '2021-12-09 01:39:28', '2021-12-09 01:39:28'),
+	(14, '5-11', 'MARACAY - BARQUISIMETO', 'mrcy-bqto', 'ca9ccfa8-d09b-4619-b354-af20637ede7e', 5, 11, 'B', 248.40, 3.50, 70, '2021-12-09 01:42:07', '2021-12-09 01:42:07'),
+	(15, '1-11', 'CARACAS - BARQUISIMETO', 'ccs-bqto', '783dd325-cc66-4bf3-b56f-4cb2a68924ff', 1, 11, 'B', 365.00, 4.99, 70, '2021-12-09 01:45:18', '2021-12-09 01:45:18'),
+	(16, '11-35', 'BARQUISIMETO - VALENCIA', 'bqto-vlcia', 'c8e315de-7ca7-4bcc-b51d-9e1a02b2d370', 11, 35, 'B', 188.70, 2.99, 70, '2021-12-09 02:50:19', '2021-12-09 02:50:19'),
+	(17, '35-11', 'VALENCIA - BARQUISIMETO', 'vlcia-bqto', '427e26a4-5bf7-4e65-9fac-4eff24fe1be4', 35, 11, 'B', 188.70, 2.99, 70, '2021-12-09 03:04:54', '2021-12-09 03:04:54');
 
 -- Volcando estructura para tabla igtt4api.route_locations
 CREATE TABLE IF NOT EXISTS `route_locations` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `route_id` bigint(20) unsigned NOT NULL,
   `location_id` bigint(20) unsigned NOT NULL,
+  `description` varchar(80) DEFAULT '',
+  `user_id` bigint(20) unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_route_location` (`route_id`,`location_id`),
   KEY `FK_route_location` (`location_id`),
@@ -835,9 +845,9 @@ CREATE TABLE IF NOT EXISTS `route_locations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Locaciones que transita la ruta';
 
 -- Volcando datos para la tabla igtt4api.route_locations: ~1 rows (aproximadamente)
-REPLACE INTO `route_locations` (`id`, `route_id`, `location_id`) VALUES
-	(5, 1, 12),
-	(4, 1, 13);
+REPLACE INTO `route_locations` (`id`, `route_id`, `location_id`, `description`, `user_id`, `created_at`, `updated_at`) VALUES
+	(4, 1, 13, '', 70, '2022-01-06 20:10:54', '2022-01-06 20:10:57'),
+	(5, 1, 12, '', 70, '2022-01-06 20:10:55', '2022-01-06 20:10:58');
 
 -- Volcando estructura para tabla igtt4api.shops
 CREATE TABLE IF NOT EXISTS `shops` (
@@ -914,9 +924,9 @@ CREATE TABLE IF NOT EXISTS `tolls` (
 
 -- Volcando datos para la tabla igtt4api.tolls: ~3 rows (aproximadamente)
 REPLACE INTO `tolls` (`id`, `toll_co`, `descriptions`, `location_id`, `user_id`, `created_at`, `update_at`) VALUES
-	(1, 'PJ-01', 'Peaje Cardenalito (LAR)', 28, 1, '2020-05-25 15:47:07', '2020-05-25 15:47:08'),
-	(2, 'PJ-02', 'Peaje Casetejas (YAR)', 28, 1, '2021-03-09 10:28:38', '2022-03-09 10:28:38'),
-	(3, 'PJ-03', 'Peaje Libertad (LAR)', 29, 1, '2021-03-09 10:36:49', '2022-03-09 10:36:49');
+	(1, 'PJ-01', 'Peaje Cardenalito (LAR)', 28, 70, '2020-05-25 15:47:07', '2020-05-25 15:47:08'),
+	(2, 'PJ-02', 'Peaje Casetejas (YAR)', 21, 70, '2021-03-09 10:28:38', '2022-03-09 10:28:38'),
+	(3, 'PJ-03', 'Peaje Libertad (LAR)', 29, 70, '2021-03-09 10:36:49', '2022-03-09 10:36:49');
 
 -- Volcando estructura para tabla igtt4api.toll_type_vehicle
 CREATE TABLE IF NOT EXISTS `toll_type_vehicle` (
@@ -1111,7 +1121,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Volcando datos para la tabla igtt4api.users: ~4 rows (aproximadamente)
 REPLACE INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `api_token`, `uuid`, `rol`, `device_id`, `remember_token`, `valid`, `address_ip`, `created_at`, `updated_at`, `token_at`) VALUES
-	(1, 'Ronald Guerra', 'rageragg2004@gmail.com', '2021-04-11 21:45:47', '$2y$04$K4jKb5pPDzy6F9FbzvXb1OrM7d1ddshuwJVGMF3pQStcd0sutud.m', '290|QKZO2vLNrYxyv7kq4vzga8mLNQED1ceBWUtKOqep', '5a5b083e-b10a-468e-9885-bca4d7d0c0a5', 'ADMINISTRATOR', 'rage-001', 'YaIMAmsmN9', 'Y', '127.0.0.1', '2021-04-11 21:45:47', '2022-01-06 22:22:29', '2022-01-07 06:22:29'),
+	(1, 'Ronald Guerra', 'rageragg2004@gmail.com', '2021-04-11 21:45:47', '$2y$04$K4jKb5pPDzy6F9FbzvXb1OrM7d1ddshuwJVGMF3pQStcd0sutud.m', '306|vzS7tN4pmlwR5csKieGI4BpBHWQH89Qq4cg5XqZu', '5a5b083e-b10a-468e-9885-bca4d7d0c0a5', 'ADMINISTRATOR', 'rage-001', 'YaIMAmsmN9', 'Y', '127.0.0.1', '2021-04-11 21:45:47', '2022-01-13 17:34:25', '2022-01-14 01:34:25'),
 	(70, 'Eliese Escobar', 'eliese.escobar@rageca.com.ve', NULL, '$2y$10$35pPTDcxfoMOmN7.yRsFQeuW6.8da7mPVBlh810ClZeokkM3blm3m', NULL, '38a06374-4d4c-4ada-8472-119c14605432', 'LOGISTIC', 'GUEST', NULL, 'Y', NULL, '2021-12-27 15:11:01', '2021-12-27 15:11:01', NULL),
 	(71, 'Yaneth Guedez', 'yaneth.guedez@rageca.com.ve', NULL, '$2y$10$krnRe/0PJ.oci3vvE/wwUu6zxW46OQFrQU8vrQAfUq3I2lQUEFEbK', NULL, 'b3637d56-60dd-4d8e-a991-206268af0237', 'BUSSINE', 'GUEST', NULL, 'Y', NULL, '2021-12-27 15:12:41', '2022-01-05 23:19:14', NULL),
 	(83, 'Yanira Suarez', 'yanira.suarez@rageca.com.ve', NULL, '$2y$10$fwwQNiuscBxOBk66zh.1hu0vNxLmONZdxA.LuKq83.xJnmwJGsiQG', NULL, '97c16335-8fc6-41ed-9572-b58c7f3b51d5', 'EMPLOYEE', 'GUEST', NULL, 'Y', NULL, '2022-01-06 18:50:40', '2022-01-06 19:00:17', NULL);
@@ -1176,6 +1186,36 @@ CREATE TABLE `v_statistics_administrator` (
 	`cant_subsidiaries` BIGINT(21) NULL
 ) ENGINE=MyISAM;
 
+-- Volcando estructura para vista igtt4api.v_statistics_logistic
+-- Creando tabla temporal para superar errores de dependencia de VIEW
+CREATE TABLE `v_statistics_logistic` (
+	`valid` CHAR(1) NULL COLLATE 'utf8mb4_unicode_ci',
+	`id` BIGINT(20) UNSIGNED NOT NULL,
+	`rol` VARCHAR(50) NULL COLLATE 'utf8mb4_unicode_ci',
+	`name` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`cant_locations` BIGINT(21) NULL,
+	`cant_shops` BIGINT(21) NULL,
+	`cant_customers` BIGINT(21) NULL,
+	`cant_subsidiaries` BIGINT(21) NULL,
+	`cant_routes` BIGINT(21) NULL,
+	`cant_route_locations` BIGINT(21) NULL,
+	`cant_tolls` BIGINT(21) NULL,
+	`cant_trailers` BIGINT(21) NULL,
+	`cant_trucks` BIGINT(21) NULL
+) ENGINE=MyISAM;
+
+-- Volcando estructura para disparador igtt4api.foreign_currency_quotes_after_insert
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` TRIGGER `foreign_currency_quotes_after_insert` AFTER INSERT ON `foreign_currency_quotes` FOR EACH ROW BEGIN
+	-- se actualiza la configuracion con el ultimo valor de la moneda
+	UPDATE configurations AS a
+	   SET a.last_foreign_currency_quote_value = NEW.quote_value,
+	       a.last_foreign_currency_quote_date  = NEW.quote_date;
+END//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
+
 -- Volcando estructura para vista igtt4api.v_configurations
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `v_configurations`;
@@ -1211,6 +1251,22 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
        ( SELECT COUNT(c.id) FROM subsidiaries c WHERE c.user_id = a.id )  cant_subsidiaries
   FROM users a
  WHERE rol = 'ADMINISTRATOR' ;
+
+-- Volcando estructura para vista igtt4api.v_statistics_logistic
+-- Eliminando tabla temporal y crear estructura final de VIEW
+DROP TABLE IF EXISTS `v_statistics_logistic`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_statistics_logistic` AS SELECT a.valid, a.id, a.rol, a.name,
+       ( SELECT COUNT(c.id) FROM locations c WHERE c.user_id = a.id )  cant_locations,
+       ( SELECT COUNT(c.id) FROM shops c WHERE c.user_id = a.id )  cant_shops,
+       ( SELECT COUNT(c.id) FROM customers c WHERE c.user_id = a.id )  cant_customers,
+       ( SELECT COUNT(c.id) FROM subsidiaries c WHERE c.user_id = a.id )  cant_subsidiaries,
+       ( SELECT COUNT(c.id) FROM routes c WHERE c.user_id = a.id )  cant_routes,
+       ( SELECT COUNT(c.id) FROM route_locations c WHERE c.user_id = a.id )  cant_route_locations,
+       ( SELECT COUNT(c.id) FROM tolls c WHERE c.user_id = a.id )  cant_tolls,
+       ( SELECT COUNT(c.id) FROM trailers c WHERE c.user_id = a.id )  cant_trailers,
+       ( SELECT COUNT(c.id) FROM trucks c WHERE c.user_id = a.id )  cant_trucks
+  FROM users a
+ WHERE rol = 'LOGISTIC' ;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

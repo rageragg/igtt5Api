@@ -55,6 +55,7 @@ JsonApi::register('v4')
 
     $api->resource('configurations');
     $api->resource('users');
+    $api->resource('foreignCurrencyQuotes');
 
     $api->resource('countries')
         ->relationships( function($api) {
